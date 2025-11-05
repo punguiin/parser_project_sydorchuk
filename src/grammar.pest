@@ -1,0 +1,4 @@
+WHITESPACE = _{ " " | "\t" | "\n" | "\r" }
+num = { ASCII_DIGIT+ }
+plus = { "(" ~ num ~ "+" ~ num ~ ")" }
+input = { SOI ~ plus ~ EOI }
