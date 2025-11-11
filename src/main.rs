@@ -18,7 +18,10 @@ fn main() -> Result<()> {
         .get_matches();
     let file_path: &PathBuf = matches.get_one("file").expect("No file path provided");
     let input = std::fs::read_to_string(file_path)?;
-    let result = parse_and_eval(&input)?;
-    println!("Result: {}", result);
+    let lines = input.lines().collect::<Vec<&str>>();
+    for input in lines {
+        let result = parse_and_eval(&input)?;
+        println!("{} = {}", input, result);
+    }
     Ok(())
 }
