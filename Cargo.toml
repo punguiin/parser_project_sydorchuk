@@ -7,5 +7,6 @@ description = "project for parsing and calculation mathematical expressions"
 
 [dependencies]
 anyhow = "1.0.100"
+clap = { version = "4.5.51", features = ["derive"] }
 pest = "2.8.3"
 pest_derive = "2.8.3"

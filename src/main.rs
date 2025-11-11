@@ -1,9 +1,24 @@
 use anyhow::Result;
+use clap::{Arg, Command, builder::PathBufValueParser};
 use math_expression_parser::parse_and_eval;
+use std::path::PathBuf;
 
 fn main() -> Result<()> {
-    let input = "(((exp(1)/pow(2,3))-sin(log(100, 10)))+(cos(ln(7.5))*tan(45)))";
-    let result = parse_and_eval(input)?;
-    println!("{} = {}", input, result);
+    let matches = Command::new("Math Expression parser")
+        .version("1.0")
+        .about("Parses and evaluates mathematical expressions from a file")
+        .arg(
+            Arg::new("file")
+                .short('f')
+                .long("file")
+                .help("Path to the input file containing the mathematical expression")
+                .required(true)
+                .value_parser(PathBufValueParser::new()),
+        )
+        .get_matches();
+    let file_path: &PathBuf = matches.get_one("file").expect("No file path provided");
+    let input = std::fs::read_to_string(file_path)?;
+    let result = parse_and_eval(&input)?;
+    println!("Result: {}", result);
     Ok(())
 }
