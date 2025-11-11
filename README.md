@@ -1,6 +1,6 @@
 # Math expression parser
 
-Main idea of parses that it will take string in input, extract mathematical expressions from it, calculate them, and output the results. Parser will be able to work with basic operations, trigonometrical functions, exponential functions, and derivatives (may be more in future)
+Main idea of parses that it will take string in input, extract mathematical expressions from it, calculate them, and output the results. Parser will be able to work with basic operations, trigonometrical functions, exponential functions (may be more in future)
 
 ## Code example
 

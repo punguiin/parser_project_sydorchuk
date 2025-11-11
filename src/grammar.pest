@@ -12,5 +12,5 @@ pow = { "pow" ~ "(" ~ expression ~ "," ~ expression ~ ")" }
 root = { "root" ~ "(" ~ expression ~ "," ~ expression ~ ")" }
 log = { "log" ~ "(" ~ expression ~ "," ~ expression ~ ")" }
 ln = { "ln" ~ "(" ~ expression ~ ")" }
-expression = { num | plus | minus | multiply | divide | sin | cos | tan | exp | pow | log | ln }
+expression = { num | plus | minus | multiply | divide | sin | cos | tan | exp | root | pow | log | ln }
 input = { SOI ~ expression ~ EOI }
