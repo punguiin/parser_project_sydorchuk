@@ -5,27 +5,46 @@ use pest_derive::Parser;
 use std::fs::OpenOptions;
 use std::io::Write;
 
+// Parser struct is generated from grammar.pest file
 #[derive(Parser)]
 #[grammar = "grammar.pest"]
 pub struct Grammar;
 
 #[derive(Debug, Clone)]
+/// The enum represents numbers, binary operations (add, sub, mul, div, pow, root, log),
+/// and unary functions (sin, cos, tan, exp, ln).
 pub enum Expr {
+    /// A numeric literal.
     Num(f64),
+    /// Addition: left + right
     Add(Box<Expr>, Box<Expr>),
+    /// Subtraction: left - right
     Sub(Box<Expr>, Box<Expr>),
+    /// Multiplication: left * right
     Mul(Box<Expr>, Box<Expr>),
+    /// Division: left / right
     Div(Box<Expr>, Box<Expr>),
+    /// Sine function: sin(x)
     Sin(Box<Expr>),
+    /// Cosine function: cos(x)
     Cos(Box<Expr>),
+    /// Tangent function: tan(x)
     Tan(Box<Expr>),
+    /// Exponential function: exp(x) = e^x
     Exp(Box<Expr>),
+    /// Natural logarithm: ln(x)
     Ln(Box<Expr>),
+    /// Power: base ^ exponent
     Pow(Box<Expr>, Box<Expr>),
+    /// Root: nth_root(value) (degree is second argument)
     Root(Box<Expr>, Box<Expr>),
+    /// Logarithm with custom base: log(value, base)
     Log(Box<Expr>, Box<Expr>),
 }
 
+/// This function walks the parse tree produced by Pest and converts rules
+/// into the corresponding `Expr` variants. It returns an error for unexpected
+/// or malformed input.
 fn build_expr(pair: Pair<Rule>) -> anyhow::Result<Expr> {
     match pair.as_rule() {
         Rule::input | Rule::expression => {
@@ -82,6 +101,8 @@ fn build_expr(pair: Pair<Rule>) -> anyhow::Result<Expr> {
     }
 }
 
+/// This performs runtime checks (division by zero, invalid arguments for ln/log/root)
+/// and returns descriptive errors via `anyhow` when evaluation cannot proceed.
 fn eval(e: &Expr) -> anyhow::Result<f64> {
     use Expr::*;
     match e {
@@ -134,6 +155,9 @@ fn eval(e: &Expr) -> anyhow::Result<f64> {
     }
 }
 
+/// Parse the input string into an `Expr` AST.
+///
+/// Returns a descriptive error if parsing fails.
 pub fn parse_expression(input: &str) -> anyhow::Result<Expr> {
     let pair = Grammar::parse(Rule::input, input)?
         .next()
@@ -141,10 +165,17 @@ pub fn parse_expression(input: &str) -> anyhow::Result<Expr> {
     build_expr(pair)
 }
 
+/// Evaluate a previously parsed `Expr`.
+///
+/// Returns the numeric result or an error if evaluation fails.
 pub fn eval_expr(expr: &Expr) -> anyhow::Result<f64> {
     eval(expr)
 }
 
+/// Convenience: parse the input, evaluate it, and append the result to `res.txt`.
+///
+/// The function returns the computed value or an error. The output file is opened
+/// in append mode and created if it does not exist.
 pub fn parse_and_eval(input: &str) -> anyhow::Result<f64> {
     let e = parse_expression(input)?;
     let res = eval_expr(&e)?;
