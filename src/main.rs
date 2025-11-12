@@ -32,7 +32,7 @@ fn main() -> anyhow::Result<()> {
     let input = std::fs::read_to_string(file_path)?;
     let lines: Vec<&str> = input.lines().collect();
     for input in lines {
-        let result = parse_and_eval(&input)?;
+        let result = parse_and_eval(input)?;
         println!("{} = {}", input, result);
     }
     Ok(())
