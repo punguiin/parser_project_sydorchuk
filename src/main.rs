@@ -35,5 +35,7 @@ fn main() -> anyhow::Result<()> {
     for input in lines {
         parse_and_eval(input)?;
     }
+    println!("Successfully evaluated expressions.");
+    println!("Results have been written to res.txt");
     Ok(())
 }
